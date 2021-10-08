@@ -1,17 +1,13 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
-    publicPath: "/",
+    filename: "bundel.js",
   },
   resolve: {
     extensions: [".js", ".jsx"],
@@ -20,7 +16,15 @@ module.exports = {
       "@styles": path.resolve(__dirname, "src/styles/"),
     },
   },
-  mode: "production",
+  mode: "development",
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "dist"),
+    },
+    compress: true,
+    historyApiFallback: true,
+    port: 3006,
+  },
   module: {
     rules: [
       {
@@ -48,10 +52,5 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "[name].css",
     }),
-    new CleanWebpackPlugin(),
   ],
-  optimization: {
-    minimize: true,
-    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
-  },
 };
